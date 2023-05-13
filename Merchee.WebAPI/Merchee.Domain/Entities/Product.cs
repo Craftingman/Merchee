@@ -3,6 +3,8 @@
     public class Product : BaseCompanyEntity
     {
         public Guid CategoryId { get; set; }
+        public ProductCategory ProductCategory { get; set; }
+
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string Barcode { get; set; } = string.Empty;

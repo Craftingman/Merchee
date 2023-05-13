@@ -5,11 +5,16 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Merchee.WebAPI", "Merchee.WebAPI\Merchee.WebAPI.csproj", "{A3A865FE-14DE-407F-9E6D-0466EDDF4FE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Merchee.Domain", "Merchee.Domain\Merchee.Domain.csproj", "{AC533CAE-F541-422C-8FC1-05435ED03E11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Merchee.Domain", "Merchee.Domain\Merchee.Domain.csproj", "{AC533CAE-F541-422C-8FC1-05435ED03E11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Merchee.BusinessLogic", "Merchee.BLL\Merchee.BusinessLogic.csproj", "{4C5D134E-E8B1-4879-BE43-589171A0B78A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Merchee.BusinessLogic", "Merchee.BLL\Merchee.BusinessLogic.csproj", "{4C5D134E-E8B1-4879-BE43-589171A0B78A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Merchee.DataAccess", "Merchee.DataAccess\Merchee.DataAccess.csproj", "{42DB3E8E-95E0-4DD0-9624-95F939459E14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Merchee.DataAccess", "Merchee.DataAccess\Merchee.DataAccess.csproj", "{42DB3E8E-95E0-4DD0-9624-95F939459E14}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{66E363AC-35A9-43F2-AAEF-C4C33C0249C4}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

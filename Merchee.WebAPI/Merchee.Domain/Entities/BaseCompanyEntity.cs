@@ -1,7 +1,7 @@
 ﻿namespace Merchee.Domain.Entities
 {
-    public abstract class BaseCompanyEntity
+    public abstract class BaseCompanyEntity : BaseEntity
     {
-        public Guid Id { get; set; }
+        public Guid CompanyId { get; set; }
     }
 }
