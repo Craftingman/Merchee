@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Merchee.DataAccess\Merchee.DataAccess.csproj" />
+    <ProjectReference Include="..\Merchee.Domain\Merchee.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

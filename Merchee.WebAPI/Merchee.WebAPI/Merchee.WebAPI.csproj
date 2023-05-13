@@ -10,4 +10,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Merchee.BLL\Merchee.BusinessLogic.csproj" />
+    <ProjectReference Include="..\Merchee.DataAccess\Merchee.DataAccess.csproj" />
+    <ProjectReference Include="..\Merchee.Domain\Merchee.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
