@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Merchee.WebAPI", "Merchee.W
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Merchee.Domain", "Merchee.Domain\Merchee.Domain.csproj", "{AC533CAE-F541-422C-8FC1-05435ED03E11}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Merchee.BusinessLogic", "Merchee.BLL\Merchee.BusinessLogic.csproj", "{4C5D134E-E8B1-4879-BE43-589171A0B78A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Merchee.BLL", "Merchee.BLL\Merchee.BLL.csproj", "{4C5D134E-E8B1-4879-BE43-589171A0B78A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Merchee.DataAccess", "Merchee.DataAccess\Merchee.DataAccess.csproj", "{42DB3E8E-95E0-4DD0-9624-95F939459E14}"
 EndProject

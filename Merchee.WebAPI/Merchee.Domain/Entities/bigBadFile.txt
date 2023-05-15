@@ -1,0 +1,166 @@
+using Merchee.Domain.Enums;
+using Microsoft.AspNetCore.Identity;
+namespace Merchee.Domain.Entities
+{
+    public abstract class BaseCompanyEntity : BaseEntity
+    {
+        public Guid CompanyId { get; set; }
+    }
+}
+namespace Merchee.Domain.Entities
+{
+    public class BaseEntity
+    {
+        public Guid Id { get; set; }
+    }
+}
+namespace Merchee.Domain.Entities
+{
+    public class Company : BaseEntity
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Currency { get; set; } = string.Empty;
+        public string CompanyEmail { get; set; } = string.Empty;
+
+        public ICollection<User> Users { get; set; } = new List<User>();
+        public ICollection<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
+        public ICollection<Product> Products { get; set; } = new List<Product>();
+        public ICollection<Shelf> Shelves { get; set; } = new List<Shelf>();
+    }
+}
+namespace Merchee.Domain.Entities
+{
+    public class CustomerShelfAction : BaseCompanyEntity
+    {
+        public Guid ShelfId { get; set; }
+        public Shelf Shelf { get; set; }
+
+        public Guid ProductId { get; set; }
+        public Product Product { get; set; }
+
+        public int Quantity { get; set; }
+        public DateTime TimeCreated { get; set; }
+    }
+}
+namespace Merchee.Domain.Entities
+{
+    public class ExpirationWarning : BaseCompanyEntity
+    {
+        public Guid ShelfItemId { get; set; }
+        public ShelfItem ShelfItem { get; set; }
+
+        public DateTime TimeCreated { get; set; }
+        public DateTime? TimeCompleted { get; set; }
+    }
+}
+namespace Merchee.Domain.Entities
+{
+    public class Notification : BaseCompanyEntity
+    {
+        public string Message { get; set; } = string.Empty;
+        public DateTime TimeCreated { get; set; }
+    }
+}
+namespace Merchee.Domain.Entities
+{
+    public class Product : BaseCompanyEntity
+    {
+        public Guid CategoryId { get; set; }
+        public ProductCategory ProductCategory { get; set; }
+
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string Barcode { get; set; } = string.Empty;
+        public float Price { get; set; }
+        public float FullWeight { get; set; }
+        public TimeSpan ShelfLife { get; set; }
+    }
+}
+namespace Merchee.Domain.Entities
+{
+    public class ProductCategory : BaseCompanyEntity
+    {
+        public string Name { get; set; } = string.Empty;
+    }
+}
+namespace Merchee.Domain.Entities
+{
+    public class ReplenishmentRequest : BaseCompanyEntity
+    {
+        public Guid ProductID { get; set; }
+        public Product Product { get; set; }
+
+        public Guid ShelfID { get; set; }
+        public Shelf Shelf { get; set; }
+
+        public int QuantityNeeded { get; set; }
+        public DateTime TimeCreated { get; set; }
+        public DateTime? TimeCompleted { get; set; }
+    }
+}
+namespace Merchee.Domain.Entities
+{
+    public class Shelf : BaseCompanyEntity
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Location { get; set; } = string.Empty;
+        public float MaxWeight { get; set; }
+        public float CurrentWeight { get; set; }
+    }
+}
+namespace Merchee.Domain.Entities
+{
+    public class ShelfItem : BaseCompanyEntity
+    {
+        public Guid ProductID { get; set; }
+        public Product Product { get; set; }
+
+        public Guid ShelfID { get; set; }
+        public Shelf Shelf { get; set; }
+
+        public int Quantity { get; set; }
+        public DateTime ExpirationDate { get; set; }
+    }
+}
+
+namespace Merchee.Domain.Entities
+{
+    public class StockTransaction : BaseCompanyEntity
+    {
+        public Guid ProductID { get; set; }
+        public Product Product { get; set; }
+
+        public Guid ShelfID { get; set; }
+        public Shelf Shelf { get; set; }
+
+        public Guid UserId { get; set; }
+        public User User { get; set; }
+
+        public StockTransactionType Type { get; set; }
+        public int Quantity { get; set; }
+        public DateTime TimeCreated { get; set; }
+    }
+}
+
+namespace Merchee.Domain.Entities
+{
+    public class User : IdentityUser<Guid>
+    {
+        public Guid CompanyId { get; set; } 
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+    }
+}
+namespace Merchee.Domain.Entities
+{
+    public class UserNotification : BaseCompanyEntity
+    {
+        public Guid UserId { get; set; }
+        public User User { get; set; }
+
+        public Guid NotificationId { get; set; }
+        public Notification Notification { get; set; }
+
+        public bool Read { get; set; }
+    }
+}
