@@ -77,16 +77,34 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    InitializeDatabase(app.Services);
+
+    app.UseRouting();
+    app.UseCors();
+    app.UseAuthentication();
+    app.UseAuthorization();
+
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.MapControllers();
+
+    app.Run();
 }
 
-app.UseAuthorization();
+static void InitializeDatabase(IServiceProvider services)
+{
+    using var serviceScope = services.CreateScope();
 
-app.MapControllers();
+    var context = serviceScope.ServiceProvider.GetRequiredService<CompanyDbContext>();
+    var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<User>>();
+    var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
-app.Run();
+    CompanyDbInitializer.SeedCompany(context);
+    CompanyDbInitializer.SeedSuperAdmin(userManager, roleManager);
+}
