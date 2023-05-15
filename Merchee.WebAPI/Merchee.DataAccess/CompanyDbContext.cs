@@ -27,9 +27,6 @@ namespace Merchee.DataAccess
                 entity.HasMany(e => e.Products)
                     .WithOne()
                     .HasForeignKey(e => e.CompanyId);
-                entity.HasMany(e => e.ProductCategories)
-                    .WithOne()
-                    .HasForeignKey(e => e.CompanyId);
                 entity.HasMany(e => e.Shelves)
                     .WithOne()
                     .HasForeignKey(e => e.CompanyId);
@@ -60,14 +57,6 @@ namespace Merchee.DataAccess
             });
 
             modelBuilder.Entity<Product>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-                entity.HasOne(e => e.ProductCategory)
-                    .WithMany()
-                    .HasForeignKey(e => e.CategoryId);
-            });
-
-            modelBuilder.Entity<ProductCategory>(entity =>
             {
                 entity.HasKey(e => e.Id);
             });
