@@ -1,6 +1,7 @@
 using Merchee.BusinessLogic.Models;
 using Merchee.DataAccess;
 using Merchee.Domain.Entities;
+using Merchee.WebAPI.Mapping;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddDbContext<CompanyDbContext>(optionsBuilder =>
         optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("EnterpriceManagerDb"))
     );
+
+    builder.Services.AddAutoMapper(typeof(GeneralProfile));
 
     builder.Services.Configure<IdentityOptions>(options =>
     {
