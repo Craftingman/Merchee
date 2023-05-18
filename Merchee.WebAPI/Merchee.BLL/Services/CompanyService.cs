@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentResults;
+using Merchee.BLL.Abstractions;
 using Merchee.BLL.Errors;
 using Merchee.DataAccess;
 using Merchee.Domain.Entities;
@@ -8,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace Merchee.BLL.Services
 {
-    public class CompanyService
+    public class CompanyService : ICompanyService
     {
         protected CompanyDbContext _dbContext;
         protected IMapper _mapper;
@@ -18,7 +19,7 @@ namespace Merchee.BLL.Services
             _dbContext = dbContext;
         }
 
-        public async Task<Result<IEnumerable<Company>>> FindAll(
+        public async Task<Result<IEnumerable<Company>>> FindAllAsync(
             int pageNumber, int pageSize,
             Expression<Func<Company, object>> orderBy,
             Expression<Func<Company, bool>> predicate = null)
@@ -36,7 +37,7 @@ namespace Merchee.BLL.Services
             .ToListAsync();
         }
 
-        public async Task<Result<Company>> Get(Guid companyId, Guid id)
+        public async Task<Result<Company>> GetAsync(Guid id)
         {
             var entity = await _dbContext.Set<Company>()
                 .FirstOrDefaultAsync(e => e.Id == id);
@@ -46,7 +47,7 @@ namespace Merchee.BLL.Services
                 : Result.Fail(new NotFoundError());
         }
 
-        public async Task<Result<Guid>> Add(Company entity)
+        public async Task<Result<Guid>> AddAsync(Company entity)
         {
             if (entity == null)
                 return Result.Fail(new BadRequestError());
@@ -55,11 +56,11 @@ namespace Merchee.BLL.Services
 
             _dbContext.Add(entity);
             return await _dbContext.SaveChangesAsync() >= 1
-                ? Result.Ok()
+                ? Result.Ok(entity.Id)
                 : Result.Fail("Failed to add entity to DB");
         }
 
-        public async Task<Result> Update(Guid id, Company entity)
+        public async Task<Result> UpdateAsync(Guid id, Company entity)
         {
             var originalEntity = await _dbContext.Set<Company>()
                 .FirstOrDefaultAsync(e => e.Id == id);

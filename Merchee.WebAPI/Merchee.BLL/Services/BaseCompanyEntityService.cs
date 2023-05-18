@@ -19,7 +19,7 @@ namespace Merchee.BLL.Services
             _dbContext = dbContext;
         }
 
-        public async Task<Result<IEnumerable<TEntity>>> FindAll(
+        public virtual async Task<Result<IEnumerable<TEntity>>> FindAll(
             Guid companyId,
             int pageNumber, int pageSize,
             Expression<Func<TEntity, object>> orderBy,
@@ -39,7 +39,7 @@ namespace Merchee.BLL.Services
                .ToListAsync();
         }
 
-        public async Task<Result<TEntity>> Get(Guid companyId, Guid id)
+        public virtual async Task<Result<TEntity>> Get(Guid companyId, Guid id)
         {
             var entity = await _dbContext.Set<TEntity>()
                 .FirstOrDefaultAsync(e => e.CompanyId == companyId && e.Id == id);
@@ -49,7 +49,7 @@ namespace Merchee.BLL.Services
                 : Result.Fail(new NotFoundError());
         }
 
-        public async Task<Result<Guid>> Add(TEntity entity)
+        public virtual async Task<Result<Guid>> Add(TEntity entity)
         {
             if (entity == null)
                 return Result.Fail(new BadRequestError());
@@ -62,7 +62,7 @@ namespace Merchee.BLL.Services
                 : Result.Fail("Failed to add entity to DB");
         }
 
-        public async Task<Result> Update(Guid companyId, Guid id, TEntity entity)
+        public virtual async Task<Result> Update(Guid companyId, Guid id, TEntity entity)
         {
             var originalEntity = await _dbContext.Set<TEntity>()
                 .FirstOrDefaultAsync(e => e.CompanyId == companyId && e.Id == id);

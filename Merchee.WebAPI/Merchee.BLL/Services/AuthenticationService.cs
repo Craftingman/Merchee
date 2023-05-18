@@ -1,4 +1,5 @@
 ﻿using FluentResults;
+using Merchee.BLL.Abstractions;
 using Merchee.BLL.Errors;
 using Merchee.BLL.Models;
 using Merchee.BusinessLogic.Models;
@@ -10,9 +11,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Merchee.BusinessLogic.Services
+namespace Merchee.BLL.Services
 {
-    public class AuthenticationService
+    public class AuthenticationService : IAuthenticationService
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
@@ -45,7 +46,7 @@ namespace Merchee.BusinessLogic.Services
 
             if (!await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                return Result.Fail<AuthenticationResult>("Passwords don't match");
+                return Result.Fail<AuthenticationResult>(new UnauthorizedError());
             }
 
             var userRoles = await _userManager.GetRolesAsync(user);
@@ -60,7 +61,7 @@ namespace Merchee.BusinessLogic.Services
             });
         }
 
-        public async Task<Result> RegisterUserAsync(RegisterUserModel model)
+        public async Task<Result> RegisterUserAsync(Guid companyId, RegisterUserModel model)
         {
             if (model is null
                 || string.IsNullOrWhiteSpace(model.Email)
@@ -85,6 +86,7 @@ namespace Merchee.BusinessLogic.Services
             var user = new User();
 
             user.Id = Guid.NewGuid();
+            user.CompanyId = companyId;
             user.FirstName = model.FirstName;
             user.LastName = model.LastName;
             user.Email = model.Email;
@@ -112,7 +114,7 @@ namespace Merchee.BusinessLogic.Services
             return Result.Ok();
         }
 
-        public string GenerateJwtToken(
+        private string GenerateJwtToken(
             Guid userId,
             Guid companyId,
         string firstName,
