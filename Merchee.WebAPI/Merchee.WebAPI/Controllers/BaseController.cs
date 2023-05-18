@@ -29,8 +29,10 @@ namespace Merchee.WebAPI.Controllers
         protected IActionResult HandleFailedResult(Result result)
         {
             var error = result.Errors.FirstOrDefault();
-            if (error is null || string.IsNullOrEmpty(error.Message))
+            if (error is null)
                 return Problem("Unexpected internal server error");
+            if (error is UnauthorizedError)
+                return Unauthorized();
             if (error is NotFoundError)
                 return NotFound();
             if (error is BadRequestError)

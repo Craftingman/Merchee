@@ -1,12 +1,25 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Merchee.Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
 namespace Merchee.WebAPI.Controllers
 {
     [Authorize]
-    public class BaseAuthorizedController : Controller
+    public class BaseAuthorizedController : BaseController
     {
+        protected UserRole UserRole
+        {
+            get
+            {
+                var roleName = this.HttpContext.User.Claims
+                    .First(c => c.Type == ClaimTypes.Role).Value;
+
+                Enum.TryParse(roleName, out UserRole userRole);
+
+                return userRole;
+            }
+        }
+
         protected Guid UserId
         {
             get
