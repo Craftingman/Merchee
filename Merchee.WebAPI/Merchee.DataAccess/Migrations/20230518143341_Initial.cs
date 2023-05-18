@@ -5,10 +5,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Merchee.DataAccess.Migrations
 {
-    /// <inheritdoc />
     public partial class Initial : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -34,7 +32,8 @@ namespace Merchee.DataAccess.Migrations
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Currency = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CompanyEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CompanyPhone = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    CompanyPhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -48,6 +47,7 @@ namespace Merchee.DataAccess.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TimeCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
                     CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -120,7 +120,8 @@ namespace Merchee.DataAccess.Migrations
                     Barcode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<float>(type: "real", nullable: false),
                     FullWeight = table.Column<float>(type: "real", nullable: false),
-                    ShelfLife = table.Column<TimeSpan>(type: "time", nullable: false),
+                    ShelfLifeTimeDays = table.Column<int>(type: "int", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
                     CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -142,7 +143,7 @@ namespace Merchee.DataAccess.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MaxWeight = table.Column<float>(type: "real", nullable: false),
-                    CurrentWeight = table.Column<float>(type: "real", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
                     CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -249,6 +250,7 @@ namespace Merchee.DataAccess.Migrations
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     NotificationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Read = table.Column<bool>(type: "bit", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
                     CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -269,29 +271,53 @@ namespace Merchee.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ShelfProduct",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ShelfID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CurrentQuantity = table.Column<int>(type: "int", nullable: false),
+                    MinQuantity = table.Column<int>(type: "int", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShelfProduct", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShelfProduct_Product_ProductID",
+                        column: x => x.ProductID,
+                        principalTable: "Product",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ShelfProduct_Shelf_ShelfID",
+                        column: x => x.ShelfID,
+                        principalTable: "Shelf",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CustomerShelfAction",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ShelfId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ShelfProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     TimeCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
                     CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CustomerShelfAction", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CustomerShelfAction_Product_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Product",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_CustomerShelfAction_Shelf_ShelfId",
-                        column: x => x.ShelfId,
-                        principalTable: "Shelf",
+                        name: "FK_CustomerShelfAction_ShelfProduct_ShelfProductId",
+                        column: x => x.ShelfProductId,
+                        principalTable: "ShelfProduct",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -301,26 +327,21 @@ namespace Merchee.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ShelfID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ShelfProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsCompleted = table.Column<bool>(type: "bit", nullable: false),
                     QuantityNeeded = table.Column<int>(type: "int", nullable: false),
                     TimeCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TimeCompleted = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
                     CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ReplenishmentRequest", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ReplenishmentRequest_Product_ProductID",
-                        column: x => x.ProductID,
-                        principalTable: "Product",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ReplenishmentRequest_Shelf_ShelfID",
-                        column: x => x.ShelfID,
-                        principalTable: "Shelf",
+                        name: "FK_ReplenishmentRequest_ShelfProduct_ShelfProductId",
+                        column: x => x.ShelfProductId,
+                        principalTable: "ShelfProduct",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -330,25 +351,19 @@ namespace Merchee.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ShelfID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ShelfProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ManufacturedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
                     CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ShelfItem", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ShelfItem_Product_ProductID",
-                        column: x => x.ProductID,
-                        principalTable: "Product",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ShelfItem_Shelf_ShelfID",
-                        column: x => x.ShelfID,
-                        principalTable: "Shelf",
+                        name: "FK_ShelfItem_ShelfProduct_ShelfProductId",
+                        column: x => x.ShelfProductId,
+                        principalTable: "ShelfProduct",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -358,12 +373,12 @@ namespace Merchee.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ShelfID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ShelfProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     TimeCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
                     CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -376,15 +391,9 @@ namespace Merchee.DataAccess.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_StockTransaction_Product_ProductID",
-                        column: x => x.ProductID,
-                        principalTable: "Product",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_StockTransaction_Shelf_ShelfID",
-                        column: x => x.ShelfID,
-                        principalTable: "Shelf",
+                        name: "FK_StockTransaction_ShelfProduct_ShelfProductId",
+                        column: x => x.ShelfProductId,
+                        principalTable: "ShelfProduct",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -395,8 +404,10 @@ namespace Merchee.DataAccess.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ShelfItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsCompleted = table.Column<bool>(type: "bit", nullable: false),
                     TimeCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TimeCompleted = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
                     CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -455,14 +466,9 @@ namespace Merchee.DataAccess.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CustomerShelfAction_ProductId",
+                name: "IX_CustomerShelfAction_ShelfProductId",
                 table: "CustomerShelfAction",
-                column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CustomerShelfAction_ShelfId",
-                table: "CustomerShelfAction",
-                column: "ShelfId");
+                column: "ShelfProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ExpirationWarning_ShelfItemId",
@@ -475,14 +481,9 @@ namespace Merchee.DataAccess.Migrations
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReplenishmentRequest_ProductID",
+                name: "IX_ReplenishmentRequest_ShelfProductId",
                 table: "ReplenishmentRequest",
-                column: "ProductID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ReplenishmentRequest_ShelfID",
-                table: "ReplenishmentRequest",
-                column: "ShelfID");
+                column: "ShelfProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Shelf_CompanyId",
@@ -490,24 +491,24 @@ namespace Merchee.DataAccess.Migrations
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ShelfItem_ProductID",
+                name: "IX_ShelfItem_ShelfProductId",
                 table: "ShelfItem",
+                column: "ShelfProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShelfProduct_ProductID",
+                table: "ShelfProduct",
                 column: "ProductID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ShelfItem_ShelfID",
-                table: "ShelfItem",
+                name: "IX_ShelfProduct_ShelfID",
+                table: "ShelfProduct",
                 column: "ShelfID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StockTransaction_ProductID",
+                name: "IX_StockTransaction_ShelfProductId",
                 table: "StockTransaction",
-                column: "ProductID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_StockTransaction_ShelfID",
-                table: "StockTransaction",
-                column: "ShelfID");
+                column: "ShelfProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StockTransaction_UserId",
@@ -525,7 +526,6 @@ namespace Merchee.DataAccess.Migrations
                 column: "UserId");
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
@@ -569,6 +569,9 @@ namespace Merchee.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "Notification");
+
+            migrationBuilder.DropTable(
+                name: "ShelfProduct");
 
             migrationBuilder.DropTable(
                 name: "Product");

@@ -7,6 +7,6 @@
         public string Barcode { get; set; } = string.Empty;
         public float Price { get; set; }
         public float FullWeight { get; set; }
-        public TimeSpan ShelfLife { get; set; }
+        public int ShelfLifeTimeDays { get; set; }
     }
 }

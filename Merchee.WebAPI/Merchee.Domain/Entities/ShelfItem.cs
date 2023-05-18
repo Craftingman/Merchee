@@ -1,14 +1,12 @@
 ﻿namespace Merchee.Domain.Entities
 {
+    // This gets deactivated once ExpirationWarning is completed for it
     public class ShelfItem : BaseCompanyEntity
     {
-        public Guid ProductID { get; set; }
-        public Product Product { get; set; }
-
-        public Guid ShelfID { get; set; }
-        public Shelf Shelf { get; set; }
-
+        public Guid ShelfProductId { get; set; }
+        public ShelfProduct ShelfProduct { get; set; }
+        
         public int Quantity { get; set; }
-        public DateTime ExpirationDate { get; set; }
+        public DateTime ManufacturedAt { get; set; }
     }
 }

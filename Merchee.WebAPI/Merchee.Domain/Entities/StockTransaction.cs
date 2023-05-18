@@ -4,11 +4,8 @@ namespace Merchee.Domain.Entities
 {
     public class StockTransaction : BaseCompanyEntity
     {
-        public Guid ProductID { get; set; }
-        public Product Product { get; set; }
-
-        public Guid ShelfID { get; set; }
-        public Shelf Shelf { get; set; }
+        public Guid ShelfProductId { get; set; }
+        public ShelfProduct ShelfProduct { get; set; }
 
         public Guid UserId { get; set; }
         public User User { get; set; }

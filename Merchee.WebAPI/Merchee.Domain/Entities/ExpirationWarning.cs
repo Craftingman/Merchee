@@ -5,6 +5,7 @@
         public Guid ShelfItemId { get; set; }
         public ShelfItem ShelfItem { get; set; }
 
+        public bool IsCompleted { get; set; }
         public DateTime TimeCreated { get; set; }
         public DateTime? TimeCompleted { get; set; }
     }

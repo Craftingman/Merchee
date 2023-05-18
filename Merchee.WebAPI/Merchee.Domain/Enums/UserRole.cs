@@ -4,6 +4,7 @@
     {
         Administrator = 0,
         Merchandiser = 1,
-        Employee = 2
+        Employee = 2,
+        SuperAdmin = 99
     }
 }

@@ -17,16 +17,19 @@ namespace Merchee.DataAccess.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "6.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("Merchee.Domain.Entities.Company", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -59,26 +62,27 @@ namespace Merchee.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CompanyId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
 
-                    b.Property<Guid>("ProductId")
+                    b.Property<Guid>("CompanyId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("ShelfId")
+                    b.Property<Guid>("ShelfProductId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("TimeCreated")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("ShelfId");
+                    b.HasIndex("ShelfProductId");
 
                     b.ToTable("CustomerShelfAction");
                 });
@@ -89,8 +93,14 @@ namespace Merchee.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("CompanyId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("ShelfItemId")
                         .HasColumnType("uniqueidentifier");
@@ -114,6 +124,9 @@ namespace Merchee.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("CompanyId")
                         .HasColumnType("uniqueidentifier");
 
@@ -134,6 +147,9 @@ namespace Merchee.DataAccess.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Barcode")
                         .IsRequired()
@@ -156,8 +172,8 @@ namespace Merchee.DataAccess.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<TimeSpan>("ShelfLife")
-                        .HasColumnType("time");
+                    b.Property<int>("ShelfLifeTimeDays")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -172,16 +188,19 @@ namespace Merchee.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("CompanyId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ProductID")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("QuantityNeeded")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("ShelfID")
+                    b.Property<Guid>("ShelfProductId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("TimeCompleted")
@@ -192,9 +211,7 @@ namespace Merchee.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductID");
-
-                    b.HasIndex("ShelfID");
+                    b.HasIndex("ShelfProductId");
 
                     b.ToTable("ReplenishmentRequest");
                 });
@@ -205,11 +222,11 @@ namespace Merchee.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("CompanyId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<float>("CurrentWeight")
-                        .HasColumnType("real");
 
                     b.Property<string>("Location")
                         .IsRequired()
@@ -235,17 +252,48 @@ namespace Merchee.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("CompanyId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("ExpirationDate")
+                    b.Property<DateTime>("ManufacturedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid>("ProductID")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
+
+                    b.Property<Guid>("ShelfProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShelfProductId");
+
+                    b.ToTable("ShelfItem");
+                });
+
+            modelBuilder.Entity("Merchee.Domain.Entities.ShelfProduct", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("CurrentQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MinQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ProductID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ShelfID")
                         .HasColumnType("uniqueidentifier");
@@ -256,7 +304,7 @@ namespace Merchee.DataAccess.Migrations
 
                     b.HasIndex("ShelfID");
 
-                    b.ToTable("ShelfItem");
+                    b.ToTable("ShelfProduct");
                 });
 
             modelBuilder.Entity("Merchee.Domain.Entities.StockTransaction", b =>
@@ -265,16 +313,16 @@ namespace Merchee.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CompanyId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
 
-                    b.Property<Guid>("ProductID")
+                    b.Property<Guid>("CompanyId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("ShelfID")
+                    b.Property<Guid>("ShelfProductId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("TimeCreated")
@@ -288,9 +336,7 @@ namespace Merchee.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductID");
-
-                    b.HasIndex("ShelfID");
+                    b.HasIndex("ShelfProductId");
 
                     b.HasIndex("UserId");
 
@@ -382,6 +428,9 @@ namespace Merchee.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("CompanyId")
                         .HasColumnType("uniqueidentifier");
 
@@ -437,7 +486,7 @@ namespace Merchee.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -461,7 +510,7 @@ namespace Merchee.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -536,21 +585,13 @@ namespace Merchee.DataAccess.Migrations
 
             modelBuilder.Entity("Merchee.Domain.Entities.CustomerShelfAction", b =>
                 {
-                    b.HasOne("Merchee.Domain.Entities.Product", "Product")
+                    b.HasOne("Merchee.Domain.Entities.ShelfProduct", "ShelfProduct")
                         .WithMany()
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("ShelfProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Merchee.Domain.Entities.Shelf", "Shelf")
-                        .WithMany()
-                        .HasForeignKey("ShelfId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("Shelf");
+                    b.Navigation("ShelfProduct");
                 });
 
             modelBuilder.Entity("Merchee.Domain.Entities.ExpirationWarning", b =>
@@ -575,21 +616,13 @@ namespace Merchee.DataAccess.Migrations
 
             modelBuilder.Entity("Merchee.Domain.Entities.ReplenishmentRequest", b =>
                 {
-                    b.HasOne("Merchee.Domain.Entities.Product", "Product")
+                    b.HasOne("Merchee.Domain.Entities.ShelfProduct", "ShelfProduct")
                         .WithMany()
-                        .HasForeignKey("ProductID")
+                        .HasForeignKey("ShelfProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Merchee.Domain.Entities.Shelf", "Shelf")
-                        .WithMany()
-                        .HasForeignKey("ShelfID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("Shelf");
+                    b.Navigation("ShelfProduct");
                 });
 
             modelBuilder.Entity("Merchee.Domain.Entities.Shelf", b =>
@@ -602,6 +635,17 @@ namespace Merchee.DataAccess.Migrations
                 });
 
             modelBuilder.Entity("Merchee.Domain.Entities.ShelfItem", b =>
+                {
+                    b.HasOne("Merchee.Domain.Entities.ShelfProduct", "ShelfProduct")
+                        .WithMany("Items")
+                        .HasForeignKey("ShelfProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ShelfProduct");
+                });
+
+            modelBuilder.Entity("Merchee.Domain.Entities.ShelfProduct", b =>
                 {
                     b.HasOne("Merchee.Domain.Entities.Product", "Product")
                         .WithMany()
@@ -622,15 +666,9 @@ namespace Merchee.DataAccess.Migrations
 
             modelBuilder.Entity("Merchee.Domain.Entities.StockTransaction", b =>
                 {
-                    b.HasOne("Merchee.Domain.Entities.Product", "Product")
+                    b.HasOne("Merchee.Domain.Entities.ShelfProduct", "ShelfProduct")
                         .WithMany()
-                        .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Merchee.Domain.Entities.Shelf", "Shelf")
-                        .WithMany()
-                        .HasForeignKey("ShelfID")
+                        .HasForeignKey("ShelfProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -640,9 +678,7 @@ namespace Merchee.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Product");
-
-                    b.Navigation("Shelf");
+                    b.Navigation("ShelfProduct");
 
                     b.Navigation("User");
                 });
@@ -733,6 +769,11 @@ namespace Merchee.DataAccess.Migrations
                     b.Navigation("Shelves");
 
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Merchee.Domain.Entities.ShelfProduct", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

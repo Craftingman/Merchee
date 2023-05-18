@@ -35,12 +35,20 @@ namespace Merchee.DataAccess
             modelBuilder.Entity<CustomerShelfAction>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.HasOne(e => e.Shelf)
+                entity.HasOne(e => e.ShelfProduct)
                     .WithMany()
-                    .HasForeignKey(e => e.ShelfId);
+                    .HasForeignKey(e => e.ShelfProductId);
+            });
+
+            modelBuilder.Entity<ShelfProduct>(entity =>
+            {
+                entity.HasKey(e => e.Id);
                 entity.HasOne(e => e.Product)
                     .WithMany()
-                    .HasForeignKey(e => e.ProductId);
+                    .HasForeignKey(e => e.ProductID);
+                entity.HasOne(e => e.Shelf)
+                    .WithMany()
+                    .HasForeignKey(e => e.ShelfID);
             });
 
             modelBuilder.Entity<ExpirationWarning>(entity =>
@@ -64,12 +72,9 @@ namespace Merchee.DataAccess
             modelBuilder.Entity<ReplenishmentRequest>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.HasOne(e => e.Product)
+                entity.HasOne(e => e.ShelfProduct)
                     .WithMany()
-                    .HasForeignKey(e => e.ProductID);
-                entity.HasOne(e => e.Shelf)
-                    .WithMany()
-                    .HasForeignKey(e => e.ShelfID);
+                    .HasForeignKey(e => e.ShelfProductId);
             });
 
             modelBuilder.Entity<Shelf>(entity =>
@@ -80,23 +85,17 @@ namespace Merchee.DataAccess
             modelBuilder.Entity<ShelfItem>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.HasOne(e => e.Product)
-                    .WithMany()
-                    .HasForeignKey(e => e.ProductID);
-                entity.HasOne(e => e.Shelf)
-                    .WithMany()
-                    .HasForeignKey(e => e.ShelfID);
+                entity.HasOne(e => e.ShelfProduct)
+                    .WithMany(e => e.Items)
+                    .HasForeignKey(e => e.ShelfProductId);
             });
 
             modelBuilder.Entity<StockTransaction>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.HasOne(e => e.Product)
+                entity.HasOne(e => e.ShelfProduct)
                     .WithMany()
-                    .HasForeignKey(e => e.ProductID);
-                entity.HasOne(e => e.Shelf)
-                    .WithMany()
-                    .HasForeignKey(e => e.ShelfID);
+                    .HasForeignKey(e => e.ShelfProductId);
                 entity.HasOne(e => e.User)
                     .WithMany()
                     .HasForeignKey(e => e.UserId);
