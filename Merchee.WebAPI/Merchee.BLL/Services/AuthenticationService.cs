@@ -3,11 +3,14 @@ using Merchee.BLL.Abstractions;
 using Merchee.BLL.Errors;
 using Merchee.BLL.Models;
 using Merchee.BusinessLogic.Models;
+using Merchee.DataAccess;
 using Merchee.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Text;
 
@@ -17,16 +20,48 @@ namespace Merchee.BLL.Services
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
+        private readonly CompanyDbContext _dbContext;
         private readonly JwtSettings _jwtSettings;
 
         public AuthenticationService(
             UserManager<User> userManager,
             RoleManager<IdentityRole<Guid>> roleManager,
+            CompanyDbContext dbContext,
             IOptions<JwtSettings> options)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _dbContext = dbContext;
             _jwtSettings = options.Value;
+        }
+
+        public async Task<Result<IEnumerable<User>>> FindAllAsync(
+            int pageNumber,
+            int pageSize,
+            Expression<Func<User, object>> orderBy,
+            Expression<Func<User, bool>> predicate = null)
+        {
+            var query = _dbContext.Set<User>().AsQueryable();
+
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            return await query.OrderBy(orderBy)
+               .Skip((pageNumber - 1) * pageSize)
+               .Take(pageSize)
+            .ToListAsync();
+        }
+
+        public async Task<Result<User>> GetAsync(Guid companyId, Guid id)
+        {
+            var entity = await _dbContext.Set<User>()
+                .FirstOrDefaultAsync(e => e.CompanyId == companyId && e.Id == id);
+
+            return entity is not null
+                ? Result.Ok(entity)
+                : Result.Fail(new NotFoundError());
         }
 
         public async Task<Result<AuthenticationResult>> LoginAsync(LoginModel model)

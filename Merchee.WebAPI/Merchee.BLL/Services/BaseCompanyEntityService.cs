@@ -54,7 +54,9 @@ namespace Merchee.BLL.Services
             if (entity == null)
                 return Result.Fail(new BadRequestError());
 
-            entity.Id = Guid.NewGuid();
+            if (entity.Id == Guid.Empty)
+                entity.Id = Guid.NewGuid();
+
             entity.CompanyId = companyId;
             entity.Active = true;
 

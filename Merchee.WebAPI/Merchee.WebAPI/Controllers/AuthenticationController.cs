@@ -16,6 +16,30 @@ namespace Merchee.WebAPI.Controllers
             _authenticationService = authenticationService;
         }
 
+        [HttpGet("user/{id?}")]
+        public async Task<IActionResult> Get(Guid? id = null)
+        {
+            if (!id.HasValue)
+                id = this.UserId;
+
+            var result = await _authenticationService.GetAsync(this.CompanyId, id.Value);
+
+            return this.HandleResult(result);
+        }
+
+        [Authorize(Roles = "Administrator")]
+        [HttpGet("users")]
+        public async Task<IActionResult> Get(int pageNumber = 1, int pageSize = 10)
+        {
+            var result = await _authenticationService.FindAllAsync(
+                pageNumber,
+                pageSize,
+                e => e.LastName,
+                e => e.CompanyId == this.CompanyId);
+
+            return this.HandleResult(result);
+        }
+
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
