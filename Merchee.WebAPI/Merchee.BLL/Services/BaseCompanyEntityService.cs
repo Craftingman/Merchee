@@ -24,10 +24,20 @@ namespace Merchee.BLL.Services
             Guid companyId,
             int pageNumber, int pageSize,
             Expression<Func<TEntity, object>> orderBy,
-            Expression<Func<TEntity, bool>> predicate = null)
+            Expression<Func<TEntity, bool>> predicate = null,
+            IEnumerable<Expression<Func<TEntity, object>>> includes = null)
         {
-            var query = _dbContext.Set<TEntity>()
-                .Where(e => e.CompanyId == companyId);
+            var query = _dbContext.Set<TEntity>().AsQueryable();
+
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
+
+            query = query.Where(e => e.CompanyId == companyId);
 
             if (predicate != null)
             {
@@ -40,7 +50,7 @@ namespace Merchee.BLL.Services
                .ToListAsync();
         }
 
-        public virtual async Task<Result<TEntity>> GetAsync(Guid companyId, Guid id)
+        public virtual async Task<Result<TEntity>> GetAsync(Guid companyId, Guid id, IEnumerable<Expression<Func<TEntity, object>>> includes = null)
         {
             var entity = await _dbContext.Set<TEntity>()
                 .FirstOrDefaultAsync(e => e.CompanyId == companyId && e.Id == id);

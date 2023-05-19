@@ -1,7 +1,5 @@
 ﻿using FluentResults;
-using Merchee.BLL.Errors;
 using Merchee.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Merchee.BLL.Abstractions
@@ -12,9 +10,10 @@ namespace Merchee.BLL.Abstractions
             Guid companyId,
             int pageNumber, int pageSize,
             Expression<Func<Product, object>> orderBy,
-            Expression<Func<Product, bool>> predicate = null);
+            Expression<Func<Product, bool>> predicate = null,
+            IEnumerable<Expression<Func<Product, object>>> includes = null);
 
-        public Task<Result<Product>> GetAsync(Guid companyId, Guid id);
+        public Task<Result<Product>> GetAsync(Guid companyId, Guid id, IEnumerable<Expression<Func<Product, object>>> includes = null);
 
         public Task<Result<Guid>> AddAsync(Guid companyId, Product entity);
 
