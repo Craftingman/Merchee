@@ -70,6 +70,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
     builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
     builder.Services.AddScoped<ICompanyService, CompanyService>();
+    builder.Services.AddScoped<IProductService, ProductService>();
 
     builder.Services.AddControllers().AddNewtonsoftJson(options =>
     {

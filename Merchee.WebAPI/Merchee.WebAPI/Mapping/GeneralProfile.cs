@@ -12,6 +12,10 @@ namespace Merchee.WebAPI.Mapping
                 .ForMember(c => c.Shelves, opt => opt.Ignore())
                 .ForMember(c => c.Products, opt => opt.Ignore())
                 .ForMember(c => c.Users, opt => opt.Ignore());
+
+            CreateMap<Product, Product>()
+                .ForMember(c => c.Id, opt => opt.Ignore())
+                .ForMember(c => c.CompanyId, opt => opt.Ignore());
         }
     }
 }
