@@ -30,6 +30,8 @@ namespace Merchee.DataAccess
                 entity.HasMany(e => e.Shelves)
                     .WithOne()
                     .HasForeignKey(e => e.CompanyId);
+                entity.HasIndex(e => e.Name)
+                    .IsUnique();
             });
 
             modelBuilder.Entity<CustomerShelfAction>(entity =>
@@ -67,6 +69,10 @@ namespace Merchee.DataAccess
             modelBuilder.Entity<Product>(entity =>
             {
                 entity.HasKey(e => e.Id);
+                entity.HasIndex(e => e.Name)
+                    .IsUnique();
+                entity.HasIndex(e => e.Barcode)
+                    .IsUnique();
             });
 
             modelBuilder.Entity<ReplenishmentRequest>(entity =>
@@ -80,6 +86,8 @@ namespace Merchee.DataAccess
             modelBuilder.Entity<Shelf>(entity =>
             {
                 entity.HasKey(e => e.Id);
+                entity.HasIndex(e => e.Barcode)
+                    .IsUnique();
             });
 
             modelBuilder.Entity<ShelfItem>(entity =>

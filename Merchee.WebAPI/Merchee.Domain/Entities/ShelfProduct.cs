@@ -10,6 +10,7 @@
 
         public ICollection<ShelfItem> Items { get; set; }
 
+        public string Location { get; set; } = string.Empty;
         public int CurrentQuantity { get; set; }
         // CurrentQuantity <= MinQuantity - Create ReplanishmentRequest
         public int MinQuantity { get; set; }

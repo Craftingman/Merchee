@@ -9,6 +9,7 @@ namespace Merchee.Domain.Entities
 
         public CustomerShelfActionType Type { get; set; }
         public int Quantity { get; set; }
+        public float Price { get; set; }
         public DateTime TimeCreated { get; set; }
     }
 }
