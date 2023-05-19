@@ -14,8 +14,9 @@ namespace Merchee.BLL.Services
         protected CompanyDbContext _dbContext;
         protected IMapper _mapper;
 
-        public CompanyService(CompanyDbContext dbContext)
+        public CompanyService(CompanyDbContext dbContext, IMapper mapper)
         {
+            _mapper = mapper;
             _dbContext = dbContext;
         }
 
@@ -53,6 +54,7 @@ namespace Merchee.BLL.Services
                 return Result.Fail(new BadRequestError());
 
             entity.Id = Guid.NewGuid();
+            entity.Active = true;
 
             _dbContext.Add(entity);
             return await _dbContext.SaveChangesAsync() >= 1

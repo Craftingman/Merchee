@@ -6,5 +6,6 @@
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
         public string Token { get; set; } = null!;
+        public Guid CompanyId { get; set; }
     }
 }

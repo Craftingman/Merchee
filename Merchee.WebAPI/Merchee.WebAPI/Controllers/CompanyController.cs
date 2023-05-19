@@ -28,7 +28,7 @@ namespace Merchee.WebAPI.Controllers
 
         [Authorize(Roles = "SuperAdmin")]
         [HttpGet]
-        public async Task<IActionResult> Get(int pageNumber = 0, int pageSize = 10)
+        public async Task<IActionResult> Get(int pageNumber = 1, int pageSize = 10)
         {
             var result = await _companyService.FindAllAsync(pageNumber, pageSize, e => e.Name);
 

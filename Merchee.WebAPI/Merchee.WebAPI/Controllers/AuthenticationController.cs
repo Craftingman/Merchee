@@ -25,7 +25,7 @@ namespace Merchee.WebAPI.Controllers
             return HandleResult(result);
         }
 
-        [Authorize("Admin")]
+        [Authorize(Roles = "Administrator")]
         [HttpPost("registerUser")]
         public async Task<IActionResult> RegisterUser([FromBody] RegisterUserModel model)
         {
@@ -37,7 +37,7 @@ namespace Merchee.WebAPI.Controllers
             return HandleResult(result);
         }
 
-        [Authorize("SuperAdmin")]
+        [Authorize(Roles = "SuperAdmin")]
         [HttpPost("registerUser/{companyId}")]
         public async Task<IActionResult> RegisterUser(Guid companyId, [FromBody] RegisterUserModel model)
         {

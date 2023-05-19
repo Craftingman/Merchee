@@ -57,11 +57,12 @@ namespace Merchee.BLL.Services
                 Token = token,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Email = user.Email
+                Email = user.Email,
+                CompanyId = user.CompanyId,
             });
         }
 
-        public async Task<Result> RegisterUserAsync(Guid companyId, RegisterUserModel model)
+        public async Task<Result<Guid>> RegisterUserAsync(Guid companyId, RegisterUserModel model)
         {
             if (model is null
                 || string.IsNullOrWhiteSpace(model.Email)
@@ -111,7 +112,7 @@ namespace Merchee.BLL.Services
                     .Select(e => new Error($"{e.Code} - {e.Description}")));
             }
 
-            return Result.Ok();
+            return Result.Ok(user.Id);
         }
 
         private string GenerateJwtToken(

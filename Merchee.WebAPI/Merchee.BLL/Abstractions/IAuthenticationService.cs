@@ -8,6 +8,6 @@ namespace Merchee.BLL.Abstractions
     {
         public Task<Result<AuthenticationResult>> LoginAsync(LoginModel model);
 
-        public Task<Result> RegisterUserAsync(Guid companyId, RegisterUserModel model);
+        public Task<Result<Guid>> RegisterUserAsync(Guid companyId, RegisterUserModel model);
     }
 }

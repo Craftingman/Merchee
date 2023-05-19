@@ -49,12 +49,14 @@ namespace Merchee.BLL.Services
                 : Result.Fail(new NotFoundError());
         }
 
-        public virtual async Task<Result<Guid>> Add(TEntity entity)
+        public virtual async Task<Result<Guid>> Add(Guid companyId, TEntity entity)
         {
             if (entity == null)
                 return Result.Fail(new BadRequestError());
 
             entity.Id = Guid.NewGuid();
+            entity.CompanyId = companyId;
+            entity.Active = true;
 
             _dbContext.Add(entity);
             return await _dbContext.SaveChangesAsync() >= 1
