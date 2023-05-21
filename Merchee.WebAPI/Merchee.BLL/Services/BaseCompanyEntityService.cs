@@ -52,6 +52,16 @@ namespace Merchee.BLL.Services
 
         public virtual async Task<Result<TEntity>> GetAsync(Guid companyId, Guid id, IEnumerable<Expression<Func<TEntity, object>>> includes = null)
         {
+            var query = _dbContext.Set<TEntity>().AsQueryable();
+
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
+
             var entity = await _dbContext.Set<TEntity>()
                 .FirstOrDefaultAsync(e => e.CompanyId == companyId && e.Id == id);
 

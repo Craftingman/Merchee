@@ -96,17 +96,13 @@ namespace Merchee.DataAccess
                 entity.HasOne(e => e.ShelfProduct)
                     .WithMany(e => e.Items)
                     .HasForeignKey(e => e.ShelfProductId);
-            });
-
-            modelBuilder.Entity<StockTransaction>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-                entity.HasOne(e => e.ShelfProduct)
+                entity.HasOne(e => e.AddedByUser)
                     .WithMany()
-                    .HasForeignKey(e => e.ShelfProductId);
-                entity.HasOne(e => e.User)
+                    .HasForeignKey(e => e.AddedByUserId);
+                entity.HasOne(e => e.RemovedByUser)
                     .WithMany()
-                    .HasForeignKey(e => e.UserId);
+                    .HasForeignKey(e => e.RemovedByUserId)
+                    .IsRequired(false);
             });
 
             modelBuilder.Entity<User>(entity =>
