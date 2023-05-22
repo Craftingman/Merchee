@@ -56,9 +56,9 @@ namespace Merchee.DataAccess
             modelBuilder.Entity<ExpirationWarning>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.HasOne(e => e.ShelfItem)
+                entity.HasOne(e => e.ShelfProduct)
                     .WithMany()
-                    .HasForeignKey(e => e.ShelfItemId);
+                    .HasForeignKey(e => e.ShelfProductId);
             });
 
             modelBuilder.Entity<Notification>(entity =>

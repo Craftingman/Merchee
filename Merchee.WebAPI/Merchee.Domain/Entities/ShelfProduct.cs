@@ -14,5 +14,6 @@
         public int CurrentQuantity { get; set; }
         // CurrentQuantity <= MinQuantity - Create ReplanishmentRequest
         public int MinQuantity { get; set; }
+        public int FullCapacity { get; set; }
     }
 }
