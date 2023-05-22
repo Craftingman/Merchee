@@ -73,6 +73,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IProductService, ProductService>();
     builder.Services.AddScoped<IShelfService, ShelfService>();
     builder.Services.AddScoped<IShelfProductService, ShelfProductService>();
+    builder.Services.AddScoped<IShelfItemService, ShelfItemService>();
 
     builder.Services.AddControllers().AddNewtonsoftJson(options =>
     {

@@ -62,7 +62,7 @@ namespace Merchee.BLL.Services
                 }
             }
 
-            var entity = await _dbContext.Set<TEntity>()
+            var entity = await query
                 .FirstOrDefaultAsync(e => e.CompanyId == companyId && e.Id == id);
 
             return entity is not null
