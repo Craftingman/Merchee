@@ -44,7 +44,7 @@ namespace Merchee.BLL.Services
                 query = query.Where(predicate);
             }
 
-            return await query.OrderBy(orderBy)
+            return await query.OrderByDescending(orderBy)
                .Skip((pageNumber - 1) * pageSize)
                .Take(pageSize)
                .ToListAsync();

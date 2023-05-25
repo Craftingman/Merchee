@@ -31,7 +31,7 @@ namespace Merchee.BLL.Services
                 if (model.Quantity >= replanishmentRequest.QuantityNeeded)
                 {
                     replanishmentRequest.IsCompleted = true;
-                    replanishmentRequest.TimeCompleted = DateTime.UtcNow.Date;
+                    replanishmentRequest.TimeCompleted = DateTime.UtcNow;
                 }
                 else
                 {
@@ -77,18 +77,27 @@ namespace Merchee.BLL.Services
             {
                 var expirationWarning = await _dbContext.Set<ExpirationWarning>()
                     .FirstOrDefaultAsync(e => e.ShelfProductId == shelfItem.ShelfProductId
-                    && e.ProductDateManufactured.Date == shelfItem.DateManufactured.Date);
+                        && e.ProductDateManufactured.Date == shelfItem.DateManufactured.Date);
                 if (expirationWarning is not null)
                 {
                     expirationWarning.IsCompleted = true;
-                    expirationWarning.TimeCompleted = DateTime.UtcNow.Date;
+                    expirationWarning.TimeCompleted = DateTime.UtcNow;
                 }
             }
 
             var newShelfProductQuantity = shelfItem.ShelfProduct.CurrentQuantity - model.Quantity;
             shelfItem.ShelfProduct.CurrentQuantity = newShelfProductQuantity >= 0 ? newShelfProductQuantity : 0;
 
-            if (shelfItem.ShelfProduct.CurrentQuantity < shelfItem.ShelfProduct.MinQuantity)
+            var replanishmentRequest = await _dbContext.Set<ReplenishmentRequest>()
+                    .FirstOrDefaultAsync(e => e.ShelfProductId == shelfItem.ShelfProductId && !e.IsCompleted);
+            if (replanishmentRequest is not null)
+            {
+                if (shelfItem.ShelfProduct.CurrentQuantity > 0)
+                {
+                    replanishmentRequest.QuantityNeeded += model.Quantity;
+                }
+            }
+            else if (shelfItem.ShelfProduct.CurrentQuantity < shelfItem.ShelfProduct.MinQuantity)
             {
                 _dbContext.Add(new ReplenishmentRequest()
                 {
@@ -96,7 +105,7 @@ namespace Merchee.BLL.Services
                     CompanyId = companyId,
                     IsCompleted = false,
                     QuantityNeeded = shelfItem.ShelfProduct.FullCapacity - shelfItem.ShelfProduct.CurrentQuantity,
-                    TimeCreated = DateTime.UtcNow.Date,
+                    TimeCreated = DateTime.UtcNow,
                     ShelfProductId = shelfItem.ShelfProductId
                 });
             }

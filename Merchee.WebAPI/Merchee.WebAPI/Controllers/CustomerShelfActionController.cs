@@ -1,25 +1,24 @@
 ﻿using Merchee.BLL.Abstractions;
-using Merchee.BLL.Models;
 using Merchee.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 
 namespace Merchee.WebAPI.Controllers
 {
-    [Route("shelfItems")]
-    public class ShelfItemController : BaseAuthorizedController
+    [Route("customerShelfActions")]
+    public class CustomerShelfActionController : BaseAuthorizedController
     {
-        private readonly IShelfItemService _shelfItemService;
+        private readonly ICustomerShelfActionService _customerShelfActionService;
 
-        public ShelfItemController(IShelfItemService shelfItemService)
+        public CustomerShelfActionController(ICustomerShelfActionService customerShelfActionService)
         {
-            _shelfItemService = shelfItemService;
+            _customerShelfActionService = customerShelfActionService;
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            var result = await _shelfItemService.GetAsync(this.CompanyId, id);
+            var result = await _customerShelfActionService.GetAsync(this.CompanyId, id);
 
             return this.HandleResult(result);
         }
@@ -27,7 +26,7 @@ namespace Merchee.WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(int pageNumber = 1, int pageSize = 10, Guid? shelfProductId = null)
         {
-            Expression<Func<ShelfItem, bool>> predicate;
+            Expression<Func<CustomerShelfAction, bool>> predicate;
             if (shelfProductId.HasValue)
             {
                 predicate = s => s.ShelfProductId == shelfProductId && s.CompanyId == this.CompanyId;
@@ -37,28 +36,20 @@ namespace Merchee.WebAPI.Controllers
                 predicate = s => s.CompanyId == this.CompanyId;
             }
 
-            var result = await _shelfItemService.FindAllAsync(
+            var result = await _customerShelfActionService.FindAllAsync(
                 this.CompanyId,
                 pageNumber,
                 pageSize,
-                e => e.DateAdded,
+                e => e.Time,
                 predicate);
 
             return this.HandleResult(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] AddShelfItemModel model)
+        public async Task<IActionResult> Post([FromBody] CustomerShelfAction product)
         {
-            var result = await _shelfItemService.AddAsync(this.CompanyId, this.UserId, model);
-
-            return this.HandleResult(result);
-        }
-
-        [HttpDelete]
-        public async Task<IActionResult> Post([FromBody] RemoveShelfItemModel model)
-        {
-            var result = await _shelfItemService.RemoveAsync(this.CompanyId, this.UserId, model);
+            var result = await _customerShelfActionService.AddAsync(this.CompanyId, product);
 
             return this.HandleResult(result);
         }
