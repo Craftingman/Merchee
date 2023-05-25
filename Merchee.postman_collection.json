@@ -1,0 +1,1179 @@
+{
+	"info": {
+		"_postman_id": "77e08d6f-584c-413f-84b7-620bb4d092e5",
+		"name": "Merchee",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16849479"
+	},
+	"item": [
+		{
+			"name": "auth/registerUser",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api_url}}/auth/registerUser",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"auth",
+						"registerUser"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "admin",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"admin@testco.com\",\r\n  \"firstName\": \"Test\",\r\n  \"lastName\": \"Admin\",\r\n  \"password\": \"admin1337\",\r\n  \"repeatPassword\": \"admin1337\",\r\n  \"role\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/auth/registerUser",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"auth",
+								"registerUser"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "merchandiser",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"merch@chudo.com\",\r\n  \"firstName\": \"Test\",\r\n  \"lastName\": \"Merchandiser\",\r\n  \"password\": \"merch1337\",\r\n  \"repeatPassword\": \"merch1337\",\r\n  \"role\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/auth/registerUser",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"auth",
+								"registerUser"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "employee",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"employee@testco.com\",\r\n  \"firstName\": \"Test\",\r\n  \"lastName\": \"Employee\",\r\n  \"password\": \"employee1337\",\r\n  \"repeatPassword\": \"employee1337\",\r\n  \"role\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/auth/registerUser",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"auth",
+								"registerUser"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "auth/registerUser SUPER",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"admin@chudo.com\",\r\n  \"firstName\": \"Test\",\r\n  \"lastName\": \"Admin\",\r\n  \"password\": \"admin1337\",\r\n  \"repeatPassword\": \"admin1337\",\r\n  \"role\": 0\r\n}"
+				},
+				"url": {
+					"raw": "{{api_url}}/auth/registerUser/45d4a997-4979-4852-ab9f-36caac031696",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"auth",
+						"registerUser",
+						"45d4a997-4979-4852-ab9f-36caac031696"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth/user",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api_url}}/auth/user",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"auth",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth/users",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api_url}}/auth/users?pageNumber=1&pageSize=10",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"auth",
+						"users"
+					],
+					"query": [
+						{
+							"key": "pageNumber",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth/login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"bearer_token\", pm.response.json().token);\r",
+							"\r",
+							"console.log(pm.response.json().token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"viktor.zherebnyi@nure.ua\",\r\n    \"password\": \"superadmin1337\"\r\n}"
+				},
+				"url": {
+					"raw": "{{api_url}}/auth/login",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "admin",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@chudo.com\",\r\n    \"password\": \"admin1337\"\r\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/auth/login",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "merch",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"merch@chudo.com\",\r\n    \"password\": \"merch1337\"\r\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/auth/login",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "super admin",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"viktor.zherebnyi@nure.ua\",\r\n    \"password\": \"superadmin1337\"\r\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/auth/login",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "companies",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"ChudoMarket\",\r\n    \"address\": \"Ukraine, Kharkiv, Kharkiv ave., 2\",\r\n    \"currency\": \"UAH\",\r\n    \"companyEmail\": \"chudo@chudo.ua\",\r\n    \"companyPhone\": \"+3809991111222\"\r\n}"
+				},
+				"url": {
+					"raw": "{{api_url}}/companies",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"companies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "companies",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"ChudoMarket\",\r\n    \"address\": \"Ukraine, Kharkiv, Kharkiv ave., 2\",\r\n    \"currency\": \"UAH\",\r\n    \"companyEmail\": \"chudo@chudo.ua\",\r\n    \"companyPhone\": \"+3809991111222\",\r\n    \"active\": \"true\"\r\n}"
+				},
+				"url": {
+					"raw": "{{api_url}}/companies/45d4a997-4979-4852-ab9f-36caac031696",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"companies",
+						"45d4a997-4979-4852-ab9f-36caac031696"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "companies",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api_url}}/companies?pageNumber=1&pageSize=10",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"companies"
+					],
+					"query": [
+						{
+							"key": "pageNumber",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "company",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api_url}}/companies/45d4a997-4979-4852-ab9f-36caac031696",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"companies",
+						"45d4a997-4979-4852-ab9f-36caac031696"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "products",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Chocolate \\\"Milka\\\"\",\r\n  \"description\": \"string\",\r\n  \"barcode\": \"string\",\r\n  \"price\": 20,\r\n  \"fullWeight\": 0.2,\r\n  \"shelfLifeTimeDays\": 20\r\n}"
+				},
+				"url": {
+					"raw": "{{api_url}}/products",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "milka",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Chocolate \\\"Milka\\\"\",\r\n  \"description\": \"Chocolate \\\"Milka\\\" Chocolate\",\r\n  \"barcode\": \"578343177496\",\r\n  \"price\": 20,\r\n  \"fullWeight\": 0.2,\r\n  \"shelfLifeTimeDays\": 20\r\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/products",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "oil",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Olive Oil \\\"Soniachna\\\"\",\r\n  \"description\": \"Olive Oil \\\"Soniachna\\\"\",\r\n  \"barcode\": \"178393982271\",\r\n  \"price\": 20,\r\n  \"fullWeight\": 0.2,\r\n  \"shelfLifeTimeDays\": 20\r\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/products",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "product",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api_url}}/products/e41aeda6-ee29-441c-b54a-33a8b04dceb6",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"products",
+						"e41aeda6-ee29-441c-b54a-33a8b04dceb6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "products",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api_url}}/products?pageNumber=1&pageSize=10",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"products"
+					],
+					"query": [
+						{
+							"key": "pageNumber",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "products",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Chocolate Bar \\\"Milka\\\"\",\r\n  \"description\": \"Chocolate \\\"Milka\\\" Chocolate\",\r\n  \"barcode\": \"578343177496\",\r\n  \"price\": 25,\r\n  \"fullWeight\": 0.2,\r\n  \"shelfLifeTimeDays\": 20,\r\n  \"active\": \"true\"\r\n}"
+				},
+				"url": {
+					"raw": "{{api_url}}/products/e41aeda6-ee29-441c-b54a-33a8b04dceb6",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"products",
+						"e41aeda6-ee29-441c-b54a-33a8b04dceb6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "shelves",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"barcode\": \"606293997284\",\r\n  \"maxWeight\": 30\r\n}"
+				},
+				"url": {
+					"raw": "{{api_url}}/shelves",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"shelves"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "shelf",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api_url}}/shelves/4a58d243-6fb3-47fd-865f-be9e2a12593e",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"shelves",
+						"4a58d243-6fb3-47fd-865f-be9e2a12593e"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "shelves",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api_url}}/shelves?pageNumber=1&pageSize=10",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"shelves"
+					],
+					"query": [
+						{
+							"key": "pageNumber",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "shelves",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"barcode\": \"606293997284\",\r\n  \"maxWeight\": 35,\r\n  \"active\": \"true\"\r\n}"
+				},
+				"url": {
+					"raw": "{{api_url}}/shelves/4a58d243-6fb3-47fd-865f-be9e2a12593e",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"shelves",
+						"4a58d243-6fb3-47fd-865f-be9e2a12593e"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "shelfProduct",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"productID\": \"f5eade1c-ece7-4678-a3b9-369eee133b2f\",\r\n  \"shelfID\": \"72ae9341-b8fe-45b1-b297-84766c3b61f6\",\r\n  \"location\": \"Grossery\",\r\n  \"currentQuantity\": 0,\r\n  \"minQuantity\": 20,\r\n  \"fullCapacity\": 100\r\n}"
+				},
+				"url": {
+					"raw": "{{api_url}}/shelfProducts",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"shelfProducts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "shelfProducts",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api_url}}/shelfProducts?pageNumber=1&pageSize=10",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"shelfProducts"
+					],
+					"query": [
+						{
+							"key": "pageNumber",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "shelfProduct",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api_url}}/shelfProducts/c4dbc0f2-46ac-4197-bb28-5d2af59ad219",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"shelfProducts",
+						"c4dbc0f2-46ac-4197-bb28-5d2af59ad219"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "shelfProducts",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"productID\": \"e41aeda6-ee29-441c-b54a-33a8b04dceb6\",\r\n  \"location\": \"Bakery\",\r\n  \"currentQuantity\": 0,\r\n  \"minQuantity\": 25\r\n}"
+				},
+				"url": {
+					"raw": "{{api_url}}/shelfProducts/c4dbc0f2-46ac-4197-bb28-5d2af59ad219",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"shelfProducts",
+						"c4dbc0f2-46ac-4197-bb28-5d2af59ad219"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "shelfItems",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"shelfProductId\": \"37035912-e141-4c40-937d-eaa6cd7c1b58\",\r\n  \"quantity\": 42,\r\n  \"dateManufactured\": \"2023-05-23T12:11:09.105Z\"\r\n}"
+				},
+				"url": {
+					"raw": "{{api_url}}/shelfItems",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"shelfItems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "shelfItems",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"shelfItemId\": \"637966dd-f0aa-46e5-ab86-8209452661fc\",\r\n  \"quantity\": 15\r\n}"
+				},
+				"url": {
+					"raw": "{{api_url}}/shelfItems",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"shelfItems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "shelfItems",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api_url}}/shelfItems?pageNumber=1&pageSize=10&shelfProductId=37035912-e141-4c40-937d-eaa6cd7c1b58",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"shelfItems"
+					],
+					"query": [
+						{
+							"key": "pageNumber",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						},
+						{
+							"key": "shelfProductId",
+							"value": "37035912-e141-4c40-937d-eaa6cd7c1b58"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "shelfItem",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api_url}}/shelfItems/9449e53d-b6da-42d1-be2d-3da12b0a58fd",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"shelfItems",
+						"9449e53d-b6da-42d1-be2d-3da12b0a58fd"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "customerShelfActions",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"shelfProductId\": \"37035912-e141-4c40-937d-eaa6cd7c1b58\",\r\n  \"type\": 0,\r\n  \"quantity\": 2\r\n}"
+				},
+				"url": {
+					"raw": "{{api_url}}/customerShelfActions",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"customerShelfActions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "customerShelfActions",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api_url}}/customerShelfActions?pageNumber=1&pageSize=10&shelfProductId=37035912-e141-4c40-937d-eaa6cd7c1b58",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"customerShelfActions"
+					],
+					"query": [
+						{
+							"key": "pageNumber",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						},
+						{
+							"key": "shelfProductId",
+							"value": "37035912-e141-4c40-937d-eaa6cd7c1b58"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "customerShelfAction",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api_url}}/customerShelfActions/ddc9dcf4-177d-493b-b4c6-62d013817146",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"customerShelfActions",
+						"ddc9dcf4-177d-493b-b4c6-62d013817146"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "replenishmentRequests",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api_url}}/replenishmentRequests?pageNumber=1&pageSize=10",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"replenishmentRequests"
+					],
+					"query": [
+						{
+							"key": "pageNumber",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "replenishmentRequest",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{api_url}}/replenishmentRequests/9374952b-aa72-4bc8-b0aa-b3d1e0c52458",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"replenishmentRequests",
+						"9374952b-aa72-4bc8-b0aa-b3d1e0c52458"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{bearer_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "bearer_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "api_url",
+			"value": "http://localhost:5031",
+			"type": "string"
+		}
+	]
+}
