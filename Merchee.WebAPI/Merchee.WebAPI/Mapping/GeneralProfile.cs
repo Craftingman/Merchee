@@ -15,11 +15,13 @@ namespace Merchee.WebAPI.Mapping
 
             CreateMap<Product, Product>()
                 .ForMember(c => c.Id, opt => opt.Ignore())
-                .ForMember(c => c.CompanyId, opt => opt.Ignore());
+                .ForMember(c => c.CompanyId, opt => opt.Ignore())
+                .ForMember(c => c.Barcode, opt => opt.Ignore());
 
             CreateMap<Shelf, Shelf>()
                 .ForMember(c => c.Id, opt => opt.Ignore())
-                .ForMember(c => c.CompanyId, opt => opt.Ignore());
+                .ForMember(c => c.CompanyId, opt => opt.Ignore())
+                .ForMember(c => c.Barcode, opt => opt.Ignore());
 
             CreateMap<ShelfProduct, ShelfProduct>()
                 .ForMember(c => c.Id, opt => opt.Ignore())
