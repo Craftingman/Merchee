@@ -15,7 +15,7 @@ namespace Merchee.BLL.Abstractions
 
         public Task<Result<Shelf>> GetAsync(Guid companyId, Guid id, IEnumerable<Expression<Func<Shelf, object>>> includes = null);
 
-        public Task<Result<Guid>> AddAsync(Guid companyId, Shelf entity);
+        public Task<Result<string>> RegisterShelfAsync(Guid companyId, Shelf entity);
 
         public Task<Result> UpdateAsync(Guid companyId, Guid id, Shelf entity);
     }

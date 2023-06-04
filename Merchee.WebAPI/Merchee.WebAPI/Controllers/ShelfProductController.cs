@@ -1,5 +1,6 @@
 ﻿using Merchee.BLL.Abstractions;
 using Merchee.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 
@@ -24,6 +25,17 @@ namespace Merchee.WebAPI.Controllers
                     s => s.Shelf,
                     s => s.Product
                 });
+
+            return this.HandleResult(result);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("byShelf")]
+        public async Task<IActionResult> GetByShelf(string shelfBarcode)
+        {
+            Request.Headers.TryGetValue("Access-Token", out var acccessToken);
+
+            var result = await _shelfProductService.GetByShelf(shelfBarcode, acccessToken);
 
             return this.HandleResult(result);
         }

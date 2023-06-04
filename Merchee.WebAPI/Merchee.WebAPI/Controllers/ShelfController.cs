@@ -40,7 +40,7 @@ namespace Merchee.WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Shelf shelf)
         {
-            var result = await _shelfService.AddAsync(this.CompanyId, shelf);
+            var result = await _shelfService.RegisterShelfAsync(this.CompanyId, shelf);
 
             return this.HandleResult(result);
         }

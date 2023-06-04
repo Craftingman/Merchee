@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using FluentResults;
 using Merchee.BLL.Abstractions;
+using Merchee.BLL.Errors;
+using Merchee.BLL.Models;
 using Merchee.DataAccess;
 using Merchee.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +31,24 @@ namespace Merchee.BLL.Services
             }
 
             return result;
+        }
+
+        public async Task<Result<ShelfProductResult>> GetByShelf(string shelfBarcode, string accessToken)
+        {
+            var shelfProduct = await _dbContext.Set<ShelfProduct>()
+                .Include(e => e.Product)
+                .FirstOrDefaultAsync(e => e.Shelf.Barcode == shelfBarcode && e.Shelf.AccessToken == accessToken);
+
+            if (shelfProduct is null)
+                return Result.Fail(new NotFoundError());
+
+            var result = new ShelfProductResult()
+            {
+                Id = shelfProduct.Id,
+                FullWeight = shelfProduct.Product.FullWeight
+            };
+
+            return Result.Ok(result);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Merchee.BLL.Abstractions;
 using Merchee.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 
@@ -46,10 +47,13 @@ namespace Merchee.WebAPI.Controllers
             return this.HandleResult(result);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CustomerShelfAction product)
         {
-            var result = await _customerShelfActionService.AddAsync(this.CompanyId, product);
+            Request.Headers.TryGetValue("Access-Token", out var acccessToken);
+
+            var result = await _customerShelfActionService.AddAsync(product, acccessToken);
 
             return this.HandleResult(result);
         }

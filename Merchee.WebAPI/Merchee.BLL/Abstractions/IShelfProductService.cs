@@ -1,4 +1,5 @@
 ﻿using FluentResults;
+using Merchee.BLL.Models;
 using Merchee.Domain.Entities;
 using System.Linq.Expressions;
 
@@ -18,5 +19,7 @@ namespace Merchee.BLL.Abstractions
         public Task<Result<Guid>> AddAsync(Guid companyId, ShelfProduct entity);
 
         public Task<Result> UpdateAsync(Guid companyId, Guid id, ShelfProduct entity);
+
+        public Task<Result<ShelfProductResult>> GetByShelf(string shelfBarcode, string accessToken);
     }
 }

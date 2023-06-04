@@ -5,6 +5,7 @@ using Merchee.BLL.Errors;
 using Merchee.DataAccess;
 using Merchee.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.CompilerServices;
 
 namespace Merchee.BLL.Services
 {
@@ -14,16 +15,22 @@ namespace Merchee.BLL.Services
         {
         }
 
-        public async Task<Result<Guid>> AddAsync(Guid companyId, CustomerShelfAction customerShelfAction)
+        public async Task<Result<Guid>> AddAsync(CustomerShelfAction customerShelfAction, string accessToken)
         {
             var shelfProduct = await _dbContext.Set<ShelfProduct>()
                 .Include(e => e.Product)
+                .Include(e => e.Shelf)
                 .FirstOrDefaultAsync(e => e.Id == customerShelfAction.ShelfProductId);
             if (shelfProduct is null)
                 return Result.Fail(new NotFoundError());
 
+            if (accessToken != shelfProduct.Shelf.AccessToken)
+                return Result.Fail(new UnauthorizedError());
+
             if (!shelfProduct.Active)
                 return Result.Fail(new InactiveItemError());
+
+            var companyId = shelfProduct.CompanyId;
 
             customerShelfAction.Id = Guid.NewGuid();
             customerShelfAction.Time = DateTime.UtcNow;

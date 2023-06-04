@@ -4,5 +4,6 @@
     {
         public string Barcode { get; set; }
         public float MaxWeight { get; set; }
+        public string AccessToken { get; set; }
     }
 }
