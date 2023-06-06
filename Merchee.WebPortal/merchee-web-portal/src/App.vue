@@ -3,9 +3,15 @@
 </template>
 
 <script>
+import http from './api.js';
 
 export default {
-  
+  async beforeCreate() {
+    if (localStorage.getItem("token")) {
+      var result = await http.get("/auth/user");
+      this.$store.commit("logIn", result);
+    }
+  }
 };
 </script>
 

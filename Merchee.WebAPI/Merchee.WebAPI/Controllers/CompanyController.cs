@@ -15,6 +15,14 @@ namespace Merchee.WebAPI.Controllers
             _companyService = companyService;
         }
 
+        [HttpGet("myCompany")]
+        public async Task<IActionResult> Get()
+        {
+            var result = await _companyService.GetAsync(this.CompanyId);
+
+            return this.HandleResult(result);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {

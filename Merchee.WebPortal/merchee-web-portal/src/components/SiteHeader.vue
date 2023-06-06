@@ -4,13 +4,12 @@
       <img src=".\..\assets\logo.png" alt="Logo">
     </div>
     <div class="account">
-      <button class="account-btn" @click="toggleDropdown">
-        
-      </button>
+      <div class="account-name">{{accountName}}</div>
+      <button class="account-btn" @click="toggleDropdown"></button>
       <ul class="dropdown-menu" v-if="showDropdown">
         <li><a href="#">Profile</a></li>
         <li><a href="#">Settings</a></li>
-        <li><a href="#">Logout</a></li>
+        <li><a href="#" v-on:click="logout()">Logout</a></li>
       </ul>
     </div>
   </header>
@@ -26,6 +25,15 @@ export default {
   methods: {
     toggleDropdown() {
       this.showDropdown = !this.showDropdown;
+    },
+    logout() {
+      this.$store.commit("logOut");
+      this.$router.push("/login");
+    }
+  },
+  computed: {
+    accountName () {
+      return this.$store.state.userData.firstName + " " + this.$store.state.userData.lastName;
     }
   }
 };
@@ -39,6 +47,10 @@ export default {
   padding: 10px;
   background-color: #f2f2f2;
   width: 100%;
+}
+
+.account-name {
+  font-size: 24px;
 }
 
 .logo img {
@@ -67,7 +79,6 @@ export default {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  display: none;
 }
 
 .dropdown-menu li {
