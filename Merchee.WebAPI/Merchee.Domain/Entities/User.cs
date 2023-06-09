@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Merchee.Domain.Enums;
+using Microsoft.AspNetCore.Identity;
 
 namespace Merchee.Domain.Entities
 {
@@ -7,5 +8,6 @@ namespace Merchee.Domain.Entities
         public Guid CompanyId { get; set; } 
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
+        public UserRole Role { get; set; }
     }
 }

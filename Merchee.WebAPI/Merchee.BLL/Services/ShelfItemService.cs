@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using FluentResults;
+using MediatR;
 using Merchee.BLL.Abstractions;
 using Merchee.BLL.Errors;
+using Merchee.BLL.MediatR.Messages;
 using Merchee.BLL.Models;
 using Merchee.DataAccess;
 using Merchee.Domain.Entities;
@@ -11,13 +13,18 @@ namespace Merchee.BLL.Services
 {
     public class ShelfItemService : BaseCompanyEntityService<ShelfItem>, IShelfItemService
     {
-        public ShelfItemService(CompanyDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
+        private readonly IMediator _mediator;
+
+        public ShelfItemService(CompanyDbContext dbContext, IMapper mapper, IMediator mediator) : base(dbContext, mapper)
         {
+            _mediator = mediator;
         }
 
         public async Task<Result<Guid>> AddAsync(Guid companyId, Guid userId, AddShelfItemModel model)
         {
-            var shelfProduct = await _dbContext.Set<ShelfProduct>().FindAsync(model.ShelfProductId);
+            var shelfProduct = await _dbContext.Set<ShelfProduct>()
+                .Include(sp => sp.Product)
+                .FirstOrDefaultAsync(sp => sp.Id == model.ShelfProductId);
             if (shelfProduct is null)
                 return Result.Fail(new NotFoundError());
 
@@ -32,10 +39,25 @@ namespace Merchee.BLL.Services
                 {
                     replanishmentRequest.IsCompleted = true;
                     replanishmentRequest.TimeCompleted = DateTime.UtcNow;
+
+                    await _mediator.Publish(new ReplenishmentRequestCompleted()
+                    {
+                        Barcode = shelfProduct.Product.Barcode,
+                        ProductName = shelfProduct.Product.Name,
+                        CompanyId = companyId
+                    });
                 }
                 else
                 {
                     replanishmentRequest.QuantityNeeded -= model.Quantity;
+
+                    await _mediator.Publish(new ReplenishmentRequestUpdated()
+                    {
+                        Barcode = shelfProduct.Product.Barcode,
+                        ProductName = shelfProduct.Product.Name,
+                        NewQuantityNeeded = replanishmentRequest.QuantityNeeded,
+                        CompanyId = companyId
+                    });
                 }
             }
 
@@ -64,6 +86,7 @@ namespace Merchee.BLL.Services
         {
             var shelfItem = await _dbContext.Set<ShelfItem>().Include(e => e.ShelfProduct)
                 .ThenInclude(e => e.Items.Where(e => e.Active == true))
+                .Include(e => e.ShelfProduct.Product)
                 .FirstOrDefaultAsync(e => e.Id == model.ShelfItemId);
             if (shelfItem is null)
                 return Result.Fail(new NotFoundError());
@@ -89,17 +112,25 @@ namespace Merchee.BLL.Services
             shelfItem.ShelfProduct.CurrentQuantity = newShelfProductQuantity >= 0 ? newShelfProductQuantity : 0;
 
             var replanishmentRequest = await _dbContext.Set<ReplenishmentRequest>()
-                    .FirstOrDefaultAsync(e => e.ShelfProductId == shelfItem.ShelfProductId && !e.IsCompleted);
+                .FirstOrDefaultAsync(e => e.ShelfProductId == shelfItem.ShelfProductId && !e.IsCompleted);
             if (replanishmentRequest is not null)
             {
                 if (shelfItem.ShelfProduct.CurrentQuantity > 0)
                 {
                     replanishmentRequest.QuantityNeeded += model.Quantity;
+
+                    await _mediator.Publish(new ReplenishmentRequestUpdated()
+                    {
+                        Barcode = shelfItem.ShelfProduct.Product.Barcode,
+                        ProductName = shelfItem.ShelfProduct.Product.Name,
+                        NewQuantityNeeded = replanishmentRequest.QuantityNeeded,
+                        CompanyId = companyId
+                    });
                 }
             }
             else if (shelfItem.ShelfProduct.CurrentQuantity < shelfItem.ShelfProduct.MinQuantity)
             {
-                _dbContext.Add(new ReplenishmentRequest()
+                var newReplenishmentRequest = new ReplenishmentRequest()
                 {
                     Active = true,
                     CompanyId = companyId,
@@ -107,6 +138,16 @@ namespace Merchee.BLL.Services
                     QuantityNeeded = shelfItem.ShelfProduct.FullCapacity - shelfItem.ShelfProduct.CurrentQuantity,
                     TimeCreated = DateTime.UtcNow,
                     ShelfProductId = shelfItem.ShelfProductId
+                };
+
+                _dbContext.Add(newReplenishmentRequest);
+
+                await _mediator.Publish(new ReplenishmentRequestCreated()
+                {
+                    Barcode = shelfItem.ShelfProduct.Product.Barcode,
+                    ProductName = shelfItem.ShelfProduct.Product.Name,
+                    QuantityNeeded = newReplenishmentRequest.QuantityNeeded,
+                    CompanyId = companyId
                 });
             }
 

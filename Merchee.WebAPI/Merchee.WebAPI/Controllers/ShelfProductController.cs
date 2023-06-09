@@ -29,6 +29,24 @@ namespace Merchee.WebAPI.Controllers
             return this.HandleResult(result);
         }
 
+        [HttpGet("byShelf/{shelfId}")]
+        public async Task<IActionResult> GetByShelf(Guid shelfId)
+        {
+            var result = await _shelfProductService.FindAllAsync(
+                this.CompanyId,
+                1,
+                1,
+                e => e.Id,
+                e => e.CompanyId == this.CompanyId && e.ShelfID == shelfId && e.Active,
+                includes: new List<Expression<Func<ShelfProduct, object>>>()
+                {
+                    s => s.Shelf,
+                    s => s.Product
+                });
+
+            return this.HandleResult(result);
+        }
+
         [AllowAnonymous]
         [HttpGet("byShelf")]
         public async Task<IActionResult> GetByShelf(string shelfBarcode)

@@ -1,10 +1,12 @@
 using Merchee.BLL.Abstractions;
+using Merchee.BLL.MediatR.Messages;
 using Merchee.BLL.Services;
 using Merchee.BusinessLogic.Models;
 using Merchee.DataAccess;
 using Merchee.Domain.Entities;
 using Merchee.WebAPI.Mapping;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -19,6 +21,7 @@ var builder = WebApplication.CreateBuilder(args);
     );
 
     builder.Services.AddAutoMapper(typeof(GeneralProfile));
+    builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<BaseCompanyMessage>());
 
     builder.Services.Configure<IdentityOptions>(options =>
     {
@@ -76,6 +79,8 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IShelfItemService, ShelfItemService>();
     builder.Services.AddScoped<ICustomerShelfActionService, CustomerShelfActionService>();
     builder.Services.AddScoped<IReplenishmentRequestService, ReplenishmentRequestService>();
+    builder.Services.AddScoped<IUserNotificationService, UserNotificationService>();
+    builder.Services.AddScoped<IReportService, ReportService>();
 
     builder.Services.AddControllers().AddNewtonsoftJson(options =>
     {

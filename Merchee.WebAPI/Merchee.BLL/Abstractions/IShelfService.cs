@@ -10,8 +10,7 @@ namespace Merchee.BLL.Abstractions
             Guid companyId,
             int pageNumber, int pageSize,
             Expression<Func<Shelf, object>> orderBy,
-            Expression<Func<Shelf, bool>> predicate = null,
-            IEnumerable<Expression<Func<Shelf, object>>> includes = null);
+            Expression<Func<Shelf, bool>> predicate = null);
 
         public Task<Result<Shelf>> GetAsync(Guid companyId, Guid id, IEnumerable<Expression<Func<Shelf, object>>> includes = null);
 

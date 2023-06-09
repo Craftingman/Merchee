@@ -49,7 +49,7 @@ namespace Merchee.DataAccess
                     .WithMany()
                     .HasForeignKey(e => e.ProductID);
                 entity.HasOne(e => e.Shelf)
-                    .WithMany()
+                    .WithMany(e => e.ShelfProducts)
                     .HasForeignKey(e => e.ShelfID);
             });
 

@@ -127,6 +127,7 @@ namespace Merchee.BLL.Services
             user.LastName = model.LastName;
             user.Email = model.Email;
             user.UserName = model.Email;
+            user.Role = model.Role;
 
             if (!await _roleManager.RoleExistsAsync(model.Role.ToString()))
             {

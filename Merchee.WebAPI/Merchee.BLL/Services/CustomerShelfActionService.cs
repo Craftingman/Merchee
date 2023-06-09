@@ -1,18 +1,22 @@
 ﻿using AutoMapper;
 using FluentResults;
+using MediatR;
 using Merchee.BLL.Abstractions;
 using Merchee.BLL.Errors;
+using Merchee.BLL.MediatR.Messages;
 using Merchee.DataAccess;
 using Merchee.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
 
 namespace Merchee.BLL.Services
 {
     public class CustomerShelfActionService : BaseCompanyEntityService<CustomerShelfAction>, ICustomerShelfActionService
     {
-        public CustomerShelfActionService(CompanyDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
+        private readonly IMediator _mediator;
+
+        public CustomerShelfActionService(CompanyDbContext dbContext, IMapper mapper, IMediator mediator) : base(dbContext, mapper)
         {
+            _mediator = mediator;
         }
 
         public async Task<Result<Guid>> AddAsync(CustomerShelfAction customerShelfAction, string accessToken)
@@ -50,11 +54,19 @@ namespace Merchee.BLL.Services
                     if (shelfProduct.CurrentQuantity > 0)
                     {
                         replanishmentRequest.QuantityNeeded += customerShelfAction.Quantity;
+
+                        await _mediator.Publish(new ReplenishmentRequestUpdated()
+                        {
+                            Barcode = shelfProduct.Product.Barcode,
+                            ProductName = shelfProduct.Product.Name,
+                            NewQuantityNeeded = replanishmentRequest.QuantityNeeded,
+                            CompanyId = companyId
+                        });
                     }
                 }
                 else if (shelfProduct.CurrentQuantity < shelfProduct.MinQuantity)
                 {
-                    _dbContext.Add(new ReplenishmentRequest()
+                    var newReplenishmentRequest = new ReplenishmentRequest()
                     {
                         CompanyId = companyId,
                         Active = true,
@@ -63,6 +75,16 @@ namespace Merchee.BLL.Services
                         QuantityNeeded = shelfProduct.FullCapacity - shelfProduct.CurrentQuantity,
                         ShelfProductId = customerShelfAction.ShelfProductId,
                         TimeCreated = DateTime.UtcNow
+                    };
+
+                    _dbContext.Add(newReplenishmentRequest);
+
+                    await _mediator.Publish(new ReplenishmentRequestCreated()
+                    {
+                        Barcode = shelfProduct.Product.Barcode,
+                        ProductName = shelfProduct.Product.Name,
+                        QuantityNeeded = newReplenishmentRequest.QuantityNeeded,
+                        CompanyId = companyId
                     });
                 }
             }
