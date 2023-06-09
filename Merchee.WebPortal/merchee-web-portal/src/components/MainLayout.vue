@@ -33,5 +33,6 @@
  }
  .content {
     display: inline-flex;
+    padding: 15px;
  }
 </style>

@@ -3,13 +3,13 @@
         <n-button
                 round
                 type="primary"
-                @click="addProduct"
+                @click="addShelve"
             >
-            Add new product
+            Register new shelve
         </n-button>
         <n-data-table
             :columns="table.columns"
-            :data="products"
+            :data="shelves"
             :pagination=false
             :bordered="false"
             :row-props="rowProps"
@@ -26,24 +26,32 @@
         table: {
             columns: [
                 {
-                    key: "name",
-                    title: "Name",
+                    key: "barcode",
+                    title: "Barcode",
                 },
                 {
-                    key: "price",
-                    title: "Price",
+                    key: "maxWeight",
+                    title: "Max Weight",
                 },
                 {
-                    key: "fullWeight",
-                    title: "Weight",
+                    key: "shelfProducts[0].location",
+                    title: "Location",
                 },
                 {
-                    key: "shelfLifeTimeDays",
-                    title: "Lifetime Days",
+                    key: "shelfProducts[0].currentQuantity",
+                    title: "Current quantity",
                 },
+                {
+                    key: "shelfProducts[0].fullCapacity",
+                    title: "Full capacity",
+                },
+                {
+                    key: "shelfProducts[0].product.name",
+                    title: "Product",
+                }
             ]
         },
-        products: [],
+        shelves: [],
         pageSize: 10,
         pageNumber: 1
       };
@@ -52,32 +60,32 @@
         rowProps(row) {
             var style = 'cursor: pointer;'
             if (!row.active) {
-                style += 'color: grey !important;'
+                style += 'background: grey!;'
             }
             return {
                 style: style,
                 onClick: () => {
-                    this.$router.push("products/" + row.id);
+                    this.$router.push("shelves/" + row.id);
                 }
             }
         },
-        async loadProducts() {
-            var result = await http.get('/products', { 
+        async loadShelves() {
+            var result = await http.get('/shelves', { 
                 pageNumber: this.pageNumber, pageSize: this.pageSize
             });
             if (result) {
-                this.products = result;
+                this.shelves = result;
         }
     },
-        addProduct() {
-            this.$router.push("/products/add");
+    addShelve() {
+            this.$router.push("/shelves/add");
         }
     },
     computed: {
       
     },
     async mounted() {
-        await this.loadProducts();
+        await this.loadShelves();
     }
   };
   </script>

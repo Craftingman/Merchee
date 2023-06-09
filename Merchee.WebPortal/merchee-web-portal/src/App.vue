@@ -1,15 +1,21 @@
 <template>
       <router-view></router-view>
+      <n-notification-provider>
+        <content />
+      </n-notification-provider>
 </template>
 
 <script>
 import http from './api.js';
 
 export default {
-  async beforeCreate() {
+  mounted() {
     if (localStorage.getItem("token")) {
-      var result = await http.get("/auth/user");
-      this.$store.commit("logIn", result);
+      http.get("/auth/user").then(result => {
+        this.$store.commit("setUserData", result);
+      });
+    } else {
+      this.$router.push("/login");
     }
   }
 };

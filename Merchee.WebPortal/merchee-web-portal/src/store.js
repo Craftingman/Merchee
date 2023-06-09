@@ -8,6 +8,9 @@ const store = createStore({
       }
     },
     mutations: {
+      setUserData (state, userData) {
+        state.userData = userData;
+      },
       logIn (state, userData) {
         state.loggedIn = true;
         state.userData = userData;

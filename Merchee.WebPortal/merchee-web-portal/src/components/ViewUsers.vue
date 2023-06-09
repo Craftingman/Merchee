@@ -3,13 +3,13 @@
         <n-button
                 round
                 type="primary"
-                @click="addProduct"
+                @click="addUser"
             >
-            Add new product
+            Register new user
         </n-button>
         <n-data-table
             :columns="table.columns"
-            :data="products"
+            :data="users"
             :pagination=false
             :bordered="false"
             :row-props="rowProps"
@@ -26,24 +26,24 @@
         table: {
             columns: [
                 {
-                    key: "name",
-                    title: "Name",
+                    key: "firstName",
+                    title: "First Name",
                 },
                 {
-                    key: "price",
-                    title: "Price",
+                    key: "lastName",
+                    title: "Last Name",
                 },
                 {
-                    key: "fullWeight",
-                    title: "Weight",
+                    key: "email",
+                    title: "Email",
                 },
                 {
-                    key: "shelfLifeTimeDays",
-                    title: "Lifetime Days",
+                    key: "roleName",
+                    title: "Role",
                 },
             ]
         },
-        products: [],
+        users: [],
         pageSize: 10,
         pageNumber: 1
       };
@@ -52,32 +52,44 @@
         rowProps(row) {
             var style = 'cursor: pointer;'
             if (!row.active) {
-                style += 'color: grey !important;'
+                style += 'background: grey!;'
             }
             return {
                 style: style,
                 onClick: () => {
-                    this.$router.push("products/" + row.id);
+                    this.$router.push("users/" + row.id);
                 }
             }
         },
-        async loadProducts() {
-            var result = await http.get('/products', { 
+        async loadUsers() {
+            var result = await http.get('auth/users', { 
                 pageNumber: this.pageNumber, pageSize: this.pageSize
             });
             if (result) {
-                this.products = result;
+                this.users = result.map(e => {
+                    return {
+                        ...e,
+                        roleName: this.mapRole(e.role)
+                    }
+                });
         }
     },
-        addProduct() {
-            this.$router.push("/products/add");
+    mapRole(roleValue) {
+        switch(roleValue) {
+            case 0: return "Administrator";
+            case 1: return "Merchandiser";
+            case 2: return "Employee";
+        }
+    },
+        addUser() {
+            this.$router.push("/users/add");
         }
     },
     computed: {
       
     },
     async mounted() {
-        await this.loadProducts();
+        await this.loadUsers();
     }
   };
   </script>

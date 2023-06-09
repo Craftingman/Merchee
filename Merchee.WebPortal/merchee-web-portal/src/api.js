@@ -1,6 +1,7 @@
 import axios from 'axios';
 import store from './store';
 import router from './router';
+//import { useNotification } from 'naive-ui'
 
 const axiosInstance = axios.create({
   baseURL: 'http://localhost:5031',
@@ -8,6 +9,8 @@ const axiosInstance = axios.create({
     'Content-Type': 'application/json',
   }
 });
+
+//const notification = useNotification();
 
 axiosInstance.interceptors.request.use(
   (config) => {
@@ -38,6 +41,14 @@ const http = {
 
   post(url, data = {}, config = {}) {
     return axiosInstance.post(url, data, config)
+      .then(response => response.data)
+      .catch(error => {
+        alert(error);
+      });
+  },
+
+  put(url, data = {}, config = {}) {
+    return axiosInstance.put(url, data, config)
       .then(response => response.data)
       .catch(error => {
         alert(error);

@@ -16,10 +16,13 @@ export default {
 data() {
     return {
     menuItems: [
-        { label: 'Company', url: '/', icon: 'fa fa-home', active: true },
+        { label: 'Company', url: '/', icon: 'fa fa-home', active: false },
         { label: 'Products', url: '/products', icon: 'fa fa-cube', active: false },
         { label: 'Shelves', url: '/shelves', icon: 'fa fa-shopping-cart', active: false },
-        { label: 'Customer Actions', url: '/customerActions', icon: 'fa fa-cog', active: false }
+        { label: 'Users', url: '/users', icon: 'fa fa-cog', active: false },
+        { label: 'Customer Actions', url: '/customerActions', icon: 'fa fa-cog', active: false },
+        { label: 'Replenishment Requests', url: '/replenishmentRequests', icon: 'fa fa-cog', active: false },
+        { label: 'Notifications', url: '/notifications', icon: 'fa fa-cog', active: false }
     ]
     };
 }
